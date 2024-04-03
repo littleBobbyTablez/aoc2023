@@ -1,0 +1,9 @@
+name = "aoc_2023"
+version = "1.0.0"
+
+[dependencies]
+gleam_stdlib = "~> 0.34 or ~> 1.0"
+simplifile = "~> 1.6"
+
+[dev-dependencies]
+gleeunit = "~> 1.0"
