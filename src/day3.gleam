@@ -50,17 +50,13 @@ pub fn execute() {
   io.println("Part 2 ================================================")
 
   numbers
-  |> dict.filter(fn(k,v){
-        let a = has_adjacent_symbol(k, string.length(v), v, symbols)
-      let symbol = list.first(a) |> result.unwrap(#("", "", []))
-      list.length(a) >= 1 && symbol.1 == "*"
-    })
   |> dict.to_list()
   |> list.map(fn(t){
       let a = has_adjacent_symbol(t.0, string.length(t.1), t.1, symbols)
       let symbol = list.first(a) |> result.unwrap(#("", "", []))
       symbol
     })
+  |> list.filter(fn(t){ t.1 == "*" })
   |> list.fold(dict.new(), fn(acc, t){
       let entry = dict.get(acc, t.0)
       case entry {
