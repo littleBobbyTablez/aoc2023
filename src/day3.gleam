@@ -37,9 +37,9 @@ pub fn execute() {
   })
 
   let with_neighbour = numbers
-  |> dict.filter(fn(k,v){ list.length(has_adjacent_symbol(k, string.length(v), symbols)) >= 1 })
+  |> dict.filter(fn(k,v){ list.length(has_adjacent_symbol(k, string.length(v), v, symbols)) >= 1 })
 
-  // io.debug(with_neighbour)
+  io.println("Part 1 ================================================")
 
   with_neighbour
   |> dict.values()
@@ -47,9 +47,42 @@ pub fn execute() {
   |> int.to_string()
   |> io.println()
 
+  io.println("Part 2 ================================================")
+
+  numbers
+  |> dict.filter(fn(k,v){
+        let a = has_adjacent_symbol(k, string.length(v), v, symbols)
+      let symbol = list.first(a) |> result.unwrap(#("", "", []))
+      list.length(a) >= 1 && symbol.1 == "*"
+    })
+  |> dict.to_list()
+  |> list.map(fn(t){
+      let a = has_adjacent_symbol(t.0, string.length(t.1), t.1, symbols)
+      let symbol = list.first(a) |> result.unwrap(#("", "", []))
+      symbol
+    })
+  |> list.fold(dict.new(), fn(acc, t){
+      let entry = dict.get(acc, t.0)
+      case entry {
+        Ok(#(some, count)) -> dict.insert(acc, t.0, #(list.append(t.2, some), count + 1))
+        Error(_) -> dict.insert(acc, t.0, #(t.2, 1))
+      }
+    })
+  |> dict.filter(fn(_,v){ v.1 == 2 })
+  |> dict.to_list()
+  |> list.map(fn(t){
+    let x = t.1
+    x.0 |> list.map(fn(e){ int.parse(e) |> result.unwrap(1) }) |> list.reduce(fn(acc, y) { acc * y })
+  })
+  |> list.map(fn(e){ result.unwrap(e, 1) })
+  |> list.reduce(fn(acc, x) { acc + x })
+  |> result.unwrap(0)
+  |> int.to_string()
+  |> io.println()
+
 }
 
-fn has_adjacent_symbol(s: String, len: Int, symbols: dict.Dict(String, String)) {
+fn has_adjacent_symbol(s: String, len: Int, v: String ,symbols: dict.Dict(String, String)) {
   let coordinates = string.split(s, " ")
   let start_x = list.first(coordinates) |> result.unwrap("0") |> int.parse() |> result.unwrap(0)
   let start_y = list.last(coordinates) |> result.unwrap("0") |> int.parse() |> result.unwrap(0)
@@ -58,10 +91,14 @@ fn has_adjacent_symbol(s: String, len: Int, symbols: dict.Dict(String, String)) 
 
   list.range(start_x - 1, start_x + len )
   |> list.fold([], fn(acc, x) {
-      let found = lines |> list.map(fn(y){ dict.get(symbols, int.to_string(x) <> " " <> int.to_string(y)) }) |> list.filter(fn(e) { result.is_ok(e) })
+      let found = lines |> list.map(fn(y){
+          let key = int.to_string(x) <> " " <> int.to_string(y)
+          #(key, dict.get(symbols, key))
+        })
+      |> list.filter(fn(e) { result.is_ok(e.1) })
       list.append(acc, found)
     })
-  |> list.map(fn(s) { result.unwrap(s, ".") })
+  |> list.map(fn(s) { #(s.0, result.unwrap(s.1, "."), [v]) })
 }
 
 fn find_numbers(l: String, row: Int) {
@@ -69,7 +106,6 @@ fn find_numbers(l: String, row: Int) {
   |> string.to_graphemes()
   |> list.fold(#([], False, Number(0, row, 0, "")), fn(acc, s){
     let current_number = acc.2
-    io.debug(current_number)
     case s {
       "" if acc.1 -> #(list.append(acc.0,  [acc.2]), False, current_number)
       "" ->  acc
