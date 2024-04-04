@@ -1,10 +1,20 @@
 import day1
 import day2
 import day3
+import day4
+import gleam/io
 
 pub fn main() {
-   // day1.execute()
-   // day2.execute()
-   day3.execute()
+    // io.println("Day 1:")
+    // day1.execute()
+    // io.println("")
+    // io.println("Day 2:")
+    // day2.execute()
+    // io.println("")
+    // io.println("Day 3:")
+    // day3.execute()
+    // io.println("")
+    io.println("Day 4:")
+    day4.execute()
 }
 

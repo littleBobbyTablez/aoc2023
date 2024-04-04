@@ -8,7 +8,7 @@ import gleam/int
 pub fn execute() {
   let assert input = simplifile.read("inputs/day1_part1.txt") |> result.unwrap("Something went wrong")
 
-  io.println("Part 1 ===========================================")
+  io.println("Part 1 ================================================")
 
   input
   |> string.trim()
@@ -20,7 +20,7 @@ pub fn execute() {
   |> int.to_string()
   |> io.println()
 
-  io.println("Part 2 ===========================================")
+  io.println("Part 2 ================================================")
 
   input
   |> string.trim()
