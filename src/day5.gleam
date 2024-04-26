@@ -71,7 +71,6 @@ pub fn execute(){
   |> int.to_string()
   |> io.println()
 
-
 }
 
 pub fn calculate_seed_ranges(l: List(Mapping), maps: List(Map)) {

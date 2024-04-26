@@ -3,6 +3,7 @@ import day2
 import day3
 import day4
 import day5
+import day6
 import gleam/io
 
 pub fn main() {
@@ -17,7 +18,9 @@ pub fn main() {
     // io.println("")
     // io.println("Day 4:")
     // day4.execute()
-    io.println("Day 5:")
-    day5.execute()
+    // io.println("Day 5:")
+    // day5.execute()
+    io.println("Day 6:")
+    day6.execute()
 }
 
