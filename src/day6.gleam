@@ -21,11 +21,21 @@ pub fn execute() {
     _ -> panic
   }
 
+  io.println("Part 1 ================================================")
+
   races
   |> list.map(fn(r) { #(r.0 |> int.parse() |> result.unwrap(0), r.1 |> int.parse |> result.unwrap(0)) })
   |> list.map(fn(r) { calculate_race(r.0, r.1) })
   |> list.reduce(fn(a, b) { a * b })
-  |> io.debug()
+  |> result.unwrap(0)
+  |> int.to_string()
+  |> io.println()
+
+  io.println("Part 2 ================================================")
+
+  calculate_race(40929790, 215106415051100)
+  |> int.to_string()
+  |> io.println()
 }
 
 fn calculate_race(t: Int, d: Int) {
